@@ -62,6 +62,10 @@ public class WindPowerCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ChatColor.GRAY + "  • 基础/强化: 需放置在最低高度以上，且上方有天空视野");
         sender.sendMessage(ChatColor.GRAY + "  • 高级以上: &a无视高度限制&r，但仍需天空视野");
         sender.sendMessage(ChatColor.GRAY + "  • 遮挡时发电量减半");
+        sender.sendMessage("");
+        sender.sendMessage(ChatColor.GOLD + "  造纸机:");
+        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.YELLOW + "⚡ " + plugin.getConfig().getInt("paper-mill.energy-consumption", 32) + " J/s"
+            + ChatColor.GRAY + " | " + ChatColor.WHITE + "2x 竹子 → 1x 纸");
         sender.sendMessage(LINE);
 
         return true;

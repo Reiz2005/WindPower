@@ -31,7 +31,7 @@ public class WindPower extends JavaPlugin implements SlimefunAddon {
     private ItemGroup itemGroup;
 
     /** Bump this when config.yml structure changes to force-reset old configs. */
-    private static final int CURRENT_CONFIG_VERSION = 3;
+    private static final int CURRENT_CONFIG_VERSION = 4;
 
     @Override
     public void onEnable() {
@@ -69,7 +69,7 @@ public class WindPower extends JavaPlugin implements SlimefunAddon {
         }
 
         getLogger().info("WindPower v" + getDescription().getVersion() + " 已启用!");
-        getLogger().info("添加了 10 种新材料、7 个等级的风力发电机和 11 项研究。");
+        getLogger().info("添加了 10 种新材料、7 个等级的风力发电机、1 台造纸机和 12 项研究。");
     }
 
     /**

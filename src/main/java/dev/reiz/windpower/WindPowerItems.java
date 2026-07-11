@@ -45,6 +45,9 @@ public class WindPowerItems {
     public static final String ID_TURBINE_QUANTUM_MK2 = "WP_WIND_TURBINE_QUANTUM_MK2";
     public static final String ID_TURBINE_QUANTUM_MK3 = "WP_WIND_TURBINE_QUANTUM_MK3";
 
+    // ===== Machine IDs =====
+    public static final String ID_PAPER_MILL = "WP_PAPER_MILL";
+
     // ===== Custom Head Textures (from minecraft-heads.com / mc-heads.com) =====
     // Carbonado / Black Diamond (dark crystalline texture for carbon fiber)
     private static final String HEAD_CARBON_FIBER =
@@ -70,10 +73,14 @@ public class WindPowerItems {
     // Wind Monster (wind-themed energy entity, for ultimate tier)
     private static final String HEAD_WIND_ENTITY =
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDk3ZTczYjUxOGI0NjEyZDJkMjY3ZWMzNDc4N2JhODYyYmIwMzExMThlM2U1MDUzMTUzOTAxYzU2OTQ0MWQwMyJ9fX0=";
+    // Paper Shredder (industrial machine head for paper mill)
+    private static final String HEAD_PAPER_MILL =
+        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMGQ2MWFiMDEzNmM2OWQ3Y2FkZGQ1NjZkMmU5YmNiMzVmZGM1ZjllM2NhMzUxZTI3MzYyYWJmMTM3NGM0ZTU4In19fQ==";
 
     public static void setup(WindPower plugin, ItemGroup group) {
         registerMaterials(plugin, group);
         registerWindTurbines(plugin, group);
+        registerPaperMill(plugin, group);
     }
 
     // ================================================================
@@ -436,5 +443,37 @@ public class WindPowerItems {
             spacetimeCore, new ItemStack(Material.NETHER_STAR), spacetimeCore,
             quantumMk2Turbine, spacetimeCore, quantumMk2Turbine
         }, e7, h7, c7, ih7).register(plugin);
+    }
+
+    // ================================================================
+    //  Paper Mill — electric bamboo → paper machine
+    // ================================================================
+    private static void registerPaperMill(WindPower plugin, ItemGroup group) {
+
+        SlimefunItemStack paperMill = new SlimefunItemStack(
+            ID_PAPER_MILL, HEAD_PAPER_MILL,
+            "&e造纸机",
+            "",
+            "&7将竹子加工成纸张的电力机器。",
+            "&7高效环保，不再需要手工合成纸。",
+            "",
+            "&e\u26A1 耗电: &c32 J/s",
+            "&e\u2699 原料: &f2x 竹子 → 1x 纸",
+            "&e\u23F3 处理时间: &b~10秒",
+            "",
+            "&7使用货运系统自动输入竹子即可无人值守造纸。"
+        );
+
+        // Recipe uses Slimefun4's own items (Electric Motor, Copper Wire, etc.)
+        ItemStack electricMotor = SlimefunItem.getById("ELECTRIC_MOTOR").getItem();
+        ItemStack copperWire = SlimefunItem.getById("COPPER_WIRE").getItem();
+        ItemStack heatingCoil = SlimefunItem.getById("HEATING_COIL").getItem();
+        ItemStack steelPlate = SlimefunItem.getById("STEEL_PLATE").getItem();
+
+        new PaperMill(group, paperMill, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+            steelPlate,    electricMotor,  steelPlate,
+            copperWire,    heatingCoil,    copperWire,
+            new ItemStack(Material.IRON_BLOCK), null, new ItemStack(Material.IRON_BLOCK)
+        }).register(plugin);
     }
 }

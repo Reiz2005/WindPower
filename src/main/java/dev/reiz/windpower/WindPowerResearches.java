@@ -15,9 +15,10 @@ import io.github.thebusybiscuit.slimefun4.api.researches.Research;
  *
  *   [基础材料] (5 LV)
  *       |
- *   [先进材料] (10 LV)
- *       |
- *   [基础风力发电] (15 LV)  ->  [强化风力发电] (20 LV)
+ *   [先进材料] (10 LV)      [造纸技术] (8 LV)
+ *       |                         |
+ *   [基础风力发电] (15 LV)       (造纸机)
+ *       |  ->  [强化风力发电] (20 LV)
  *                                      |
  *   [量子能源技术] (40 LV)  <-----------┘
  *       |
@@ -47,6 +48,7 @@ public class WindPowerResearches {
     private static final int ID_QUANTUM_MK2         = 8508;
     private static final int ID_SPACETIME_TECH      = 8509;
     private static final int ID_QUANTUM_MK3         = 8510;
+    private static final int ID_PAPER_MILL          = 8511;
 
     public static void setup(WindPower plugin) {
 
@@ -64,6 +66,16 @@ public class WindPowerResearches {
             WindPowerItems.ID_MAGNETIC_ALLOY
         );
         basicMaterials.register();
+
+        // ---- Paper Mill (low-cost standalone machine) ----
+        Research paperMill = new Research(
+            new NamespacedKey(plugin, "paper_mill"),
+            ID_PAPER_MILL,
+            "造纸技术",
+            8
+        );
+        addItems(paperMill, WindPowerItems.ID_PAPER_MILL);
+        paperMill.register();
 
         // ---- Tier 2: Advanced Materials ----
         Research advancedMaterials = new Research(
