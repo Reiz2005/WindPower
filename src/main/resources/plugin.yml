@@ -1,0 +1,17 @@
+name: WindPower
+version: ${project.version}
+main: dev.reiz.windpower.WindPower
+api-version: 1.20
+author: Reiz
+description: A Slimefun4 addon that adds wind turbines and related materials.
+depend: [Slimefun]
+commands:
+  windpower:
+    description: WindPower addon info
+    usage: /windpower
+    aliases: [wp]
+
+permissions:
+  windpower.admin:
+    description: Allows reloading the WindPower config
+    default: op

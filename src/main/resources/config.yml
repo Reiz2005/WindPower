@@ -1,0 +1,58 @@
+# WindPower Addon Configuration
+# You can adjust these values to balance the plugin on your server.
+
+# DO NOT CHANGE THIS! Used by the plugin to detect config updates.
+config-version: 3
+
+options:
+  # Auto-update check (requires internet)
+  auto-update: true
+
+# Wind Turbine Settings
+wind-turbines:
+  basic:
+    # Energy output (J per Slimefun tick, displayed as J/s in the guide)
+    energy-output: 20
+    # Minimum Y height to generate power
+    min-height: 60
+    # Energy buffer capacity (0 = no buffer, energy must be consumed immediately)
+    capacity: 0
+    # If true, ignore min-height (generate at any Y)
+    ignore-height: false
+
+  reinforced:
+    energy-output: 35
+    min-height: 60
+    capacity: 0
+    ignore-height: false
+
+  advanced:
+    # Advanced and above ignore height requirements
+    energy-output: 45
+    min-height: 0
+    capacity: 0
+    ignore-height: true
+
+  quantum:
+    energy-output: 150
+    min-height: 0
+    capacity: 0
+    ignore-height: true
+
+  quantum-mk1:
+    energy-output: 180
+    min-height: 0
+    capacity: 1024
+    ignore-height: true
+
+  quantum-mk2:
+    energy-output: 256
+    min-height: 0
+    capacity: 2048
+    ignore-height: true
+
+  quantum-mk3:
+    energy-output: 512
+    min-height: 0
+    capacity: 4096
+    ignore-height: true
