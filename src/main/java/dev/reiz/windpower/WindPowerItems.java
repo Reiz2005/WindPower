@@ -140,6 +140,9 @@ public class WindPowerItems {
         }).register(plugin);
 
         // --- Titanium Ingot ---
+        ItemStack sfSteelIngot  = safeSlimefunItem("STEEL_INGOT",  Material.IRON_INGOT);
+        ItemStack sfCopperIngot = safeSlimefunItem("COPPER_INGOT", Material.COPPER_INGOT);
+
         SlimefunItemStack titaniumIngot = new SlimefunItemStack(
             ID_TITANIUM_INGOT, Material.IRON_INGOT,
             "&f钛锭",
@@ -150,9 +153,9 @@ public class WindPowerItems {
             "&e用于制作: &7强化叶片、高级发电机"
         );
         new SlimefunItem(group, titaniumIngot, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.COPPER_INGOT), new ItemStack(Material.IRON_INGOT),
-            null, null, null,
-            null, null, null
+            sfSteelIngot,    sfCopperIngot,    sfSteelIngot,
+            new ItemStack(Material.GOLD_INGOT), null, null,
+            null,             null,             null
         }).register(plugin);
 
         // --- Magnetic Alloy Ingot ---
