@@ -3,6 +3,7 @@ package dev.reiz.windpower;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -73,14 +74,34 @@ public class WindPowerItems {
     // Wind Monster (wind-themed energy entity, for ultimate tier)
     private static final String HEAD_WIND_ENTITY =
         "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDk3ZTczYjUxOGI0NjEyZDJkMjY3ZWMzNDc4N2JhODYyYmIwMzExMThlM2U1MDUzMTUzOTAxYzU2OTQ0MWQwMyJ9fX0=";
-    // Paper Shredder (industrial machine head for paper mill)
-    private static final String HEAD_PAPER_MILL =
-        "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMGQ2MWFiMDEzNmM2OWQ3Y2FkZGQ1NjZkMmU5YmNiMzVmZGM1ZjllM2NhMzUxZTI3MzYyYWJmMTM3NGM0ZTU4In19fQ==";
 
     public static void setup(WindPower plugin, ItemGroup group) {
-        registerMaterials(plugin, group);
-        registerWindTurbines(plugin, group);
-        registerPaperMill(plugin, group);
+        plugin.getLogger().info("开始注册 WindPower 物品...");
+
+        try {
+            registerMaterials(plugin, group);
+            plugin.getLogger().info("✓ 材料注册完成 (10 种)");
+        } catch (Exception e) {
+            plugin.getLogger().severe("✗ 材料注册失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        try {
+            registerWindTurbines(plugin, group);
+            plugin.getLogger().info("✓ 风力发电机注册完成 (7 级)");
+        } catch (Exception e) {
+            plugin.getLogger().severe("✗ 风力发电机注册失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        try {
+            registerPaperMill(plugin, group);
+            plugin.getLogger().info("✓ 造纸机注册完成");
+        } catch (Exception e) {
+            plugin.getLogger().severe("✗ 造纸机注册失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     // ================================================================
@@ -449,31 +470,61 @@ public class WindPowerItems {
     //  Paper Mill — electric bamboo → paper machine
     // ================================================================
     private static void registerPaperMill(WindPower plugin, ItemGroup group) {
+        try {
+            // 防御性清理：如果之前因 /reload 或旧版残留导致 WP_PAPER_MILL 已注册，先移除
+            SlimefunItem existing = SlimefunItem.getById(ID_PAPER_MILL);
+            if (existing != null) {
+                group.getItems().remove(existing);
+                Slimefun.getRegistry().getAllSlimefunItems().remove(existing);
+                plugin.getLogger().info("已清理旧的造纸机注册记录，准备重新注册...");
+            }
 
-        SlimefunItemStack paperMill = new SlimefunItemStack(
-            ID_PAPER_MILL, HEAD_PAPER_MILL,
+            SlimefunItemStack paperMill = new SlimefunItemStack(
+            ID_PAPER_MILL, Material.CARTOGRAPHY_TABLE,
             "&e造纸机",
             "",
-            "&7将竹子加工成纸张的电力机器。",
+            "&7将植物材料加工成纸张的电力机器。",
             "&7高效环保，不再需要手工合成纸。",
             "",
             "&e\u26A1 耗电: &c32 J/s",
-            "&e\u2699 原料: &f2x 竹子 → 1x 纸",
-            "&e\u23F3 处理时间: &b~10秒",
             "",
-            "&7使用货运系统自动输入竹子即可无人值守造纸。"
+            "&e\u2699 配方:",
+            "&7  2x 竹子 → 1x 纸 &8(~10秒)",
+            "&7  1x 甘蔗 → 1x 纸 &8(~5秒)",
+            "&7  16x 树叶 → 5x 纸 &8(~15秒)",
+            "",
+            "&7支持所有原版树叶类型。",
+            "&7使用货运系统自动输入即可无人值守造纸。"
         );
 
-        // Recipe uses Slimefun4's own items (Electric Motor, Copper Wire, etc.)
-        ItemStack electricMotor = SlimefunItem.getById("ELECTRIC_MOTOR").getItem();
-        ItemStack copperWire = SlimefunItem.getById("COPPER_WIRE").getItem();
-        ItemStack heatingCoil = SlimefunItem.getById("HEATING_COIL").getItem();
-        ItemStack steelPlate = SlimefunItem.getById("STEEL_PLATE").getItem();
+        // Recipe uses Slimefun4's own items where available, with vanilla fallbacks
+        ItemStack electricMotor = safeSlimefunItem("ELECTRIC_MOTOR", Material.IRON_INGOT);
+        ItemStack copperWire    = safeSlimefunItem("COPPER_WIRE",    Material.COPPER_INGOT);
+        ItemStack heatingCoil   = safeSlimefunItem("HEATING_COIL",   Material.BLAZE_ROD);
+        ItemStack aluminumBronze = safeSlimefunItem("ALUMINUM_BRONZE_INGOT", Material.IRON_INGOT);
 
         new PaperMill(group, paperMill, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            steelPlate,    electricMotor,  steelPlate,
-            copperWire,    heatingCoil,    copperWire,
+            aluminumBronze, electricMotor,  aluminumBronze,
+            copperWire,     heatingCoil,    copperWire,
             new ItemStack(Material.IRON_BLOCK), null, new ItemStack(Material.IRON_BLOCK)
         }).register(plugin);
+            plugin.getLogger().info("✓ 造纸机注册完成");
+        } catch (Exception e) {
+            plugin.getLogger().severe("✗ 造纸机注册失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Safely retrieves a Slimefun item by ID. If the item is not registered
+     * (e.g. missing in the installed Slimefun version), falls back to the
+     * given vanilla Material so that recipe registration never crashes.
+     */
+    private static ItemStack safeSlimefunItem(String id, Material fallback) {
+        SlimefunItem sfItem = SlimefunItem.getById(id);
+        if (sfItem != null) {
+            return sfItem.getItem();
+        }
+        return new ItemStack(fallback);
     }
 }

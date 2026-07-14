@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
 import org.bukkit.Material;
@@ -31,7 +32,7 @@ public class WindPower extends JavaPlugin implements SlimefunAddon {
     private ItemGroup itemGroup;
 
     /** Bump this when config.yml structure changes to force-reset old configs. */
-    private static final int CURRENT_CONFIG_VERSION = 4;
+    private static final int CURRENT_CONFIG_VERSION = 5;
 
     @Override
     public void onEnable() {
@@ -55,11 +56,18 @@ public class WindPower extends JavaPlugin implements SlimefunAddon {
             3
         );
 
-        // Register all items (materials + turbines)
+        // Register all items (materials + turbines + paper mill)
         WindPowerItems.setup(this, itemGroup);
 
+
         // Register research tree (must be after items are registered)
-        WindPowerResearches.setup(this);
+        try {
+            WindPowerResearches.setup(this);
+            getLogger().info("✓ 研究树注册完成 (12 项)");
+        } catch (Exception e) {
+            getLogger().severe("✗ 研究树注册失败: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         // Register /windpower command
         if (getCommand("windpower") != null) {

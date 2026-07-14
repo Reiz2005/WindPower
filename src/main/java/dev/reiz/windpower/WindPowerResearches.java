@@ -77,6 +77,7 @@ public class WindPowerResearches {
         addItems(paperMill, WindPowerItems.ID_PAPER_MILL);
         paperMill.register();
 
+
         // ---- Tier 2: Advanced Materials ----
         Research advancedMaterials = new Research(
             new NamespacedKey(plugin, "advanced_materials"),

@@ -64,8 +64,10 @@ public class WindPowerCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ChatColor.GRAY + "  • 遮挡时发电量减半");
         sender.sendMessage("");
         sender.sendMessage(ChatColor.GOLD + "  造纸机:");
-        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.YELLOW + "⚡ " + plugin.getConfig().getInt("paper-mill.energy-consumption", 32) + " J/s"
-            + ChatColor.GRAY + " | " + ChatColor.WHITE + "2x 竹子 → 1x 纸");
+        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.YELLOW + "⚡ " + plugin.getConfig().getInt("paper-mill.energy-consumption", 32) + " J/s");
+        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.WHITE + "2x 竹子 → 1x 纸");
+        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.WHITE + "1x 甘蔗 → 1x 纸");
+        sender.sendMessage(ChatColor.GRAY + "  • " + ChatColor.WHITE + "16x 树叶 → 5x 纸 (任意树叶)");
         sender.sendMessage(LINE);
 
         return true;

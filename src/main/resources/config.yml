@@ -2,7 +2,7 @@
 # You can adjust these values to balance the plugin on your server.
 
 # DO NOT CHANGE THIS! Used by the plugin to detect config updates.
-config-version: 4
+config-version: 5
 
 options:
   # Auto-update check (requires internet)
@@ -57,9 +57,8 @@ wind-turbines:
     capacity: 4096
     ignore-height: true
 
-# Paper Mill — electric machine that converts bamboo to paper
+# Paper Mill — electric machine that converts plant materials to paper
+# Recipes: 2x bamboo → 1 paper, 1x sugar cane → 1 paper, 16x leaves → 1 paper
 paper-mill:
   # Energy consumed per Slimefun tick (displayed as J/s in the guide)
   energy-consumption: 32
-  # Processing time in Slimefun ticks (~0.5s per tick)
-  processing-time: 20
